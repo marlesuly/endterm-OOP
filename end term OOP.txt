@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
+interface Printable {
+    String print();
+}
+
+interface PaymentCalculator {
+    double getPaymentAmount();
+}
+
+class Person implements Comparable<Person>, Printable {
+
+    @Override
+    public String print() {
+        return getPosition() + ": " + toString() + " earns " + getPaymentAmount() + " tenge";
+    }
+}
+
+class Employee extends Person implements PaymentCalculator {
+
+    @Override
+    public double getPaymentAmount() {
+        return getSalary();
+    }
+}
+
+class Student extends Person implements PaymentCalculator {
+
+    @Override
+    public double getPaymentAmount() {
+        return (getGpa() > 2.67) ? 36660.00 : 0.0;
+    }
+}
+
+class Printer {
+    public static void printData(Iterable<? extends Printable> items) {
+        for (Printable item : items) {
+            System.out.println(item.print());
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ArrayList<Person> people = new ArrayList<>();
+        people.add(new Employee("John", "Lennon", "Manager", 27045.78));
+        people.add(new Employee("George", "Harrison", "Developer", 50000.00));
+        people.add(new Student("Ringo", "Starr", 2.0));
+        people.add(new Student("Paul", "McCartney", 3.5));
+
+        Collections.sort(people);
+
+        Printer.printData(people);
+    }
+}
